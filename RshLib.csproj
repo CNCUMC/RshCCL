@@ -103,15 +103,4 @@
       DestinationFolder="$(BepInExDir)/plugins/$(PluginDirName)"
     />
   </Target>
-
-  <Target Name="CopyFoldersToPluginsFolder" AfterTargets="AfterBuild" Condition="'$(RequiredFoldersToCopy)'!=''">
-    <ItemGroup>
-      <RequiredFolders Include="$(RequiredFoldersToCopy.Split(';'))" />
-      <FilesToCopy Include="%(RequiredFolders.Identity)/**/*" />
-    </ItemGroup>
-    <Copy
-      SourceFiles="@(FilesToCopy)"
-      DestinationFiles="@(FilesToCopy->'$(BepInExDir)/plugins/$(PluginDirName)/%(Identity)')"
-    />
-  </Target>
 </Project>

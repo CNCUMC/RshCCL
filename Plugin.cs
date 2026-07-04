@@ -9,7 +9,7 @@ using UnityEngine;
 namespace RshLib;
 
 [BepInPlugin(Guid, Name, Version)]
-[BepInDependency("net.cucorelib", "1.0.1")]
+[BepInDependency("net.cucorelib", "1.0.2")]
 [BepInDependency("KrokoshaCasualtiesMP", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BaseUnityPlugin
 {
