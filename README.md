@@ -1,4 +1,4 @@
-![Cover](Covor.psd)
+![Logo](Logo.png)
 
 [中文指南](README_ZH.md)
 

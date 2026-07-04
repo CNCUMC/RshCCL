@@ -1,4 +1,4 @@
-![Cover](Covor.psd)
+![Logo](Logo.png)
 
 [English Guide](README.md)
 
