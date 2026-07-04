@@ -6,21 +6,10 @@ using UnityEngine;
 
 namespace RshLib;
 
-/// <summary>
-/// RshLib → CUCoreLib 的注册转接器。
-/// 将老模组调用的 <see cref="RshItem"/> 转换为 <see cref="CustomItemInfo"/>，
-/// 并通过 <see cref="ItemRegistry.Register"/> 注册到 CCL。
-/// </summary>
 public static class RshItemAdapter
 {
-    /// <summary>存储 itemId → onSpawn 回调的映射，供 <see cref="RshSpawnCallback"/> 查找。</summary>
-    internal static readonly Dictionary<string, Action<GameObject, string>> OnSpawnCallbacks =
-        new Dictionary<string, Action<GameObject, string>>();
-
-    /// <summary>
-    /// 将 RshItem 转接注册到 CUCoreLib。
-    /// 保持与原 RshLib 相同的验证行为和异常消息。
-    /// </summary>
+    internal static readonly Dictionary<string, Action<GameObject, string>> OnSpawnCallbacks = new();
+    
     public static void RegisterItem(string itemId, RshItem rshItem)
     {
         if (string.IsNullOrEmpty(itemId))
@@ -52,11 +41,7 @@ public static class RshItemAdapter
         // 通过 CCL 注册
         ItemRegistry.Register(itemId, customInfo, rshItem.sprite);
     }
-
-    /// <summary>
-    /// 将 <see cref="RshItem.info"/> 复制到新的 <see cref="CustomItemInfo"/> 实例。
-    /// 如果 info 本身就是 CustomItemInfo，则直接返回。
-    /// </summary>
+    
     private static CustomItemInfo ConvertToCustomItemInfo(RshItem rshItem)
     {
         if (rshItem.info is CustomItemInfo existing)
@@ -77,7 +62,7 @@ public static class RshItemAdapter
             }
             catch
             {
-                // 跳过无法设置的字段（如只读字段）
+                // ignored
             }
         }
 
@@ -85,10 +70,6 @@ public static class RshItemAdapter
     }
 }
 
-/// <summary>
-/// 通过 CCL SpawnComponents 机制在物品生成时触发 RshLib 的 onSpawn 回调。
-/// 在 Start() 中执行回调后自动销毁自身。
-/// </summary>
 internal class RshSpawnCallback : MonoBehaviour
 {
     private void Start()
@@ -99,7 +80,6 @@ internal class RshSpawnCallback : MonoBehaviour
             return;
         }
 
-        // 处理 "$" 后缀：itemId$suffix → baseId=itemId, suffix=suffix
         var fullId = item.id;
         var suffixIndex = fullId.IndexOf('$');
         var baseId = suffixIndex > 0 ? fullId.Substring(0, suffixIndex) : fullId;

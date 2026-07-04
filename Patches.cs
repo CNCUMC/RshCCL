@@ -5,9 +5,6 @@ using UnityEngine;
 
 namespace RshLib;
 
-/// <summary>
-/// 控制台 spawn 命令自动补全 — 确保通过 RshCCL 注册的自定义物品出现在补全列表中。
-/// </summary>
 [HarmonyPatch(typeof(ConsoleScript))]
 internal class ConsoleScriptPatch
 {
@@ -25,9 +22,7 @@ internal class ConsoleScriptPatch
     }
 }
 
-/// <summary>
-/// 在主菜单 beta build 文字上添加 "modded" 标记，致敬 jimmy_king。
-/// </summary>
+// 在主菜单 beta build 文字上添加 "modded" 标记，致敬传奇 JimmyKing
 [HarmonyPatch(typeof(GlobalDark))]
 internal class GlobalDarkPatch
 {
@@ -49,19 +44,16 @@ internal class GlobalDarkPatch
     }
 }
 
-/// <summary>
-/// 防护 RefreshRecipeList 中的空引用异常。
-/// 当已注册物品（如 icecream 因图片路径问题失败）的图标为 null 时，CCL 可能产生 NRE。
-/// </summary>
-[HarmonyPatch(typeof(PlayerCamera), "RefreshRecipeList")]
+[HarmonyPatch(typeof(PlayerCamera))]
 internal class RefreshRecipeListGuardPatch
 {
+    [HarmonyPatch("RefreshRecipeList")]
     [HarmonyFinalizer]
     public static Exception Finalizer(Exception __exception)
     {
         if (__exception == null) return null;
         Plugin.Logger.LogWarning($"[RshCCL] Suppressed exception in RefreshRecipeList: {__exception.GetType().Name}: {__exception.Message}");
-        return null; // 吞掉异常，配方列表可能不完整但游戏不会崩溃
+        return null;
 
     }
 }
