@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <Product>MossTemplate</Product>
-    <Version>1.0.0</Version>
+    <Product>RshLib</Product>
+    <Version>3.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -11,12 +11,11 @@
       https://nuget.samboy.dev/v3/index.json
     </RestoreAdditionalProjectSources>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <PackageProjectUrl>https://github.com/yourname/MossTemplate</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yourname/MossTemplate</RepositoryUrl>
-    <PackageId>MossTemplate</PackageId>
+    <PackageProjectUrl>https://github.com/CNCUMC/RshCCL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CNCUMC/RshCCL</RepositoryUrl>
+    <PackageId>RshLib</PackageId>
   </PropertyGroup>
 
-  <!-- BepInEx & Harmony (通过 NuGet 自动管理) -->
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
@@ -25,11 +24,17 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" IncludeAssets="compile" />
   </ItemGroup>
 
-  <!--
-    游戏 DLL 引用 - 路径由 Directory.Build.props 中的 $(BaseGamePath) 决定。
-    复制 Directory.Build.props.example 为 Directory.Build.props 并填写你的游戏路径。
-    如需额外引用，取消注释或添加新条目。
-  -->
+  <ItemGroup>
+    <!-- CUCoreLib (CCL) -->
+    <Reference Include="CUCoreLib">
+      <HintPath>$(CUCoreLibDll)</HintPath>
+    </Reference>
+    <!-- KrokoshaCasualtiesMP (MP) -->
+    <Reference Include="KrokoshaCasualtiesMP">
+      <HintPath>$(KrokoshaCasualtiesMPDll)</HintPath>
+    </Reference>
+  </ItemGroup>
+  
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(BaseGamePath)\CasualtiesUnknown_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -66,6 +71,9 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>$(BaseGamePath)\CasualtiesUnknown_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(BaseGamePath)\CasualtiesUnknown_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

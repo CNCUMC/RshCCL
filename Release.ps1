@@ -44,7 +44,7 @@
     GitHub Release 需要安装 gh CLI: winget install GitHub.cli
 #>
 param(
-    [string]$ModNamespace = "__MOD_NAMESPACE__",
+    [string]$ModNamespace = "RshLib",
     [string]$ModDisplayName = "__MOD_DISPLAY_NAME__",
     [string]$ModVersion = "__MOD_VERSION__",
     [int]$NexusModId = 0,

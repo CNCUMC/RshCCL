@@ -1,6 +1,6 @@
 ﻿param(
-    [string]$GamePath = "__GAME_ROOT_PATH__",
-    [string]$ModNamespace = "__MOD_NAMESPACE__"
+    [string]$GamePath = "F:/SteamLibrary/steamapps/common/Casualties Unknown Demo",
+    [string]$ModNamespace = "RshLib"
 )
 
 function Convert-ToDisplayName {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <BaseGamePath>__GAME_ROOT_PATH__</BaseGamePath>
+    <BaseGamePath>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo</BaseGamePath>
+    <CUCoreLibDll>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo/BepInEx/plugins/CUCoreLib.dll/</CUCoreLibDll>
+    <KrokoshaCasualtiesMPDll>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo/BepInEx/plugins/KrokMP/KrokoshaCasualtiesMP.dll</KrokoshaCasualtiesMPDll>
     <!-- <GameManagedDir>$(BaseGamePath)\CasualtiesUnknown_Data\Managed</GameManagedDir> -->
     <!-- <BepInExDir>$(BaseGamePath)\BepInEx</BepInExDir> -->
   </PropertyGroup>
