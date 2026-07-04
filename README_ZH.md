@@ -10,7 +10,7 @@
 
 # RshCCL
 
-[GitHub](https://github.com/CNCUMC/RshCCL) | [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib)
+[GitHub](https://github.com/CNCUMC/RshCCL) | [NexusMods](https://www.nexusmods.com/games/scavprototype/mods/403) | [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib)
 
 _一个兼容转接层，将旧 RshLib 的 API 调用转发到
 [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib) （CCL）。
