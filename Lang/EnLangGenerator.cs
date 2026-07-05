@@ -9,7 +9,6 @@ public class EnLangGenerator : ModLangGenBase
     {
         Log("version", "RshCCL {0}, CUCoreLib bridge active, Together: {1}");
         Log("game_version_mismatch", "GAME VERSION MISMATCH, Expected: 7.0.1, Current: {0}, Loading will continue");
-        Log("hide", "Hidden from plugin registry to prevent false conflict detection.");
         Log("id_null", "The id of item you're trying to register is null or empty! Item wasn't registered.");
         Log("item_registred", "Item {0} was already registered before! Item wasn't registered.");
         Log("sprite_null", "The sprite of item {0} is null");

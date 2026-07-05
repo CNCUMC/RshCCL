@@ -9,7 +9,6 @@ public class ZhCnLangGenerator : ModLangGenBase
     {
         Log("version", "RshCCL {0}，CUCoreLib 桥接已激活，联机：{1}");
         Log("game_version_mismatch", "游戏版本不匹配，预期：7.0.1，当前：{0}，将继续加载");
-        Log("hide", "已从插件注册表隐藏，防止误判冲突。");
         Log("id_null", "尝试注册的物品 ID 为空！物品未注册");
         Log("item_registred", "物品 {0} 之前已被注册！物品未注册");
         Log("sprite_null", "物品 {0} 的精灵为空");

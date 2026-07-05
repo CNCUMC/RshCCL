@@ -52,9 +52,7 @@ public class Plugin : BaseUnityPlugin
                 "GAME VERSION MISMATCH, Expected: 7.0.1, Current: {0}, Loading will continue", Application.version);
 
         _harmony.PatchAll();
-
-        PreventFalseConflictDetection();
-
+        
         InitializeLocalization();
 
         LogInfo("loaded", "RshCCL loaded!");
@@ -88,19 +86,6 @@ public class Plugin : BaseUnityPlugin
         {
             LogWarning("bark_init_failed",
                 "Failed to initialize Bark localization: {0}", ex.Message);
-        }
-    }
-
-    private static void PreventFalseConflictDetection()
-    {
-        try
-        {
-            if (BepInEx.Bootstrap.Chainloader.PluginInfos.Remove(Guid))
-                LogInfo("hide", "Hidden from plugin registry to prevent false conflict detection.");
-        }
-        catch
-        {
-            // ignored
         }
     }
 
