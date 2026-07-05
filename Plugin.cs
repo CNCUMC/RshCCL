@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
-using Bark.BetterCCL;
 using BepInEx;
 using BepInEx.Logging;
 using CUCoreLib.Helpers;
 using CUCoreLib.Registries;
 using HarmonyLib;
-using RshLib.Lang;
 using UnityEngine;
 
 namespace RshLib;
@@ -64,15 +63,32 @@ public class Plugin : BaseUnityPlugin
     private static void InitializeLocalization()
     {
         if (!BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("org.cucnmc.bark"))
-        {
             return;
-        }
 
-        barkLoaded = true;
-        new EnLangGenerator().Initialize(Logger);
-        new ZhCnLangGenerator().Initialize(Logger);
-        new ZhTwLangGenerator().Initialize(Logger);
-        BetterLocale.Flush();
+        try
+        {
+            foreach (var genName in new[] { "EnLangGenerator", "ZhCnLangGenerator", "ZhTwLangGenerator" })
+            {
+                var genType = Type.GetType($"RshLib.Lang.{genName}, RshLib");
+                if (genType == null) continue;
+                var gen = Activator.CreateInstance(genType);
+                var init = genType.GetMethod("Initialize",
+                    BindingFlags.Public | BindingFlags.Instance);
+                init?.Invoke(gen, [Logger]);
+            }
+
+            var betterLocale = Type.GetType("Bark.BetterCCL.BetterLocale, Bark");
+            var flush = betterLocale?.GetMethod("Flush",
+                BindingFlags.Public | BindingFlags.Static);
+            flush?.Invoke(null, null);
+
+            barkLoaded = true;
+        }
+        catch (Exception ex)
+        {
+            LogWarning("bark_init_failed",
+                "Failed to initialize Bark localization: {0}", ex.Message);
+        }
     }
 
     private static void PreventFalseConflictDetection()
@@ -165,6 +181,16 @@ public class Plugin : BaseUnityPlugin
 
     internal static string LocaleLog(string key, params object[] args)
     {
-        return BetterLocale.GetLog(key, args);
+        try
+        {
+            var betterLocale = Type.GetType("Bark.BetterCCL.BetterLocale, Bark");
+            var getLog = betterLocale?.GetMethod("GetLog",
+                BindingFlags.Public | BindingFlags.Static);
+            return (string)getLog?.Invoke(null, [key, args]);
+        }
+        catch
+        {
+            return Replace(key, args);
+        }
     }
 }
