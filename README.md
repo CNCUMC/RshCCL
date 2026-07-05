@@ -10,7 +10,7 @@
 
 # RshCCL
 
-[GitHub](https://github.com/CNCUMC/RshCCL) | [NexusMods](https://www.nexusmods.com/games/scavprototype/mods/403) | [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib)
+[GitHub](https://github.com/CNCUMC/RshCCL) | [NexusMods](https://www.nexusmods.com/scavprototype/mods/403) | [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib)
 
 _A compatibility bridge that forwards legacy RshLib API calls to
 [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib) (CCL)._
