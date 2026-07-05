@@ -9,20 +9,23 @@ namespace RshLib;
 public static class RshItemAdapter
 {
     internal static readonly Dictionary<string, Action<GameObject, string>> OnSpawnCallbacks = new();
-    
+
     public static void RegisterItem(string itemId, RshItem rshItem)
     {
         if (string.IsNullOrEmpty(itemId))
-            throw new ArgumentException("The id of item you're trying to register is null or empty! Item wasn't registred.");
+            throw new ArgumentException(
+                Plugin.LocaleLog("id_null",
+                    "The id of item you're trying to register is null or empty! Item wasn't registred."));
 
         if (ItemRegistry.TryGetCustomInfo(itemId, out _))
-            throw new ArgumentException($"Item {itemId} already was registred before! Item wasn't registred.");
+            throw new ArgumentException("item_registred",
+                Plugin.LocaleLog("Item {0} already was registred before! Item wasn't registred.", itemId));
 
         if (null == rshItem.sprite)
-            Plugin.Logger.LogWarning($"[RshCCL] The sprite of item {itemId} is null");
+            Plugin.LogWarning("sprite_null", "The sprite of item {0} is null", itemId);
 
         if (null == rshItem.info)
-            Plugin.Logger.LogWarning($"[RshCCL] The info of item {itemId} is null");
+            Plugin.LogWarning("info_null", "The info of item {0} is null", itemId);
 
         if (string.IsNullOrEmpty(rshItem.baseItem))
             rshItem.baseItem = "geofruit";
@@ -41,7 +44,7 @@ public static class RshItemAdapter
         // 通过 CCL 注册
         ItemRegistry.Register(itemId, customInfo, rshItem.sprite);
     }
-    
+
     private static CustomItemInfo ConvertToCustomItemInfo(RshItem rshItem)
     {
         if (rshItem.info is CustomItemInfo existing)
@@ -82,8 +85,12 @@ internal class RshSpawnCallback : MonoBehaviour
 
         var fullId = item.id;
         var suffixIndex = fullId.IndexOf('$');
-        var baseId = suffixIndex > 0 ? fullId.Substring(0, suffixIndex) : fullId;
-        var suffix = suffixIndex > 0 ? fullId.Substring(suffixIndex + 1) : "";
+        var baseId = suffixIndex > 0
+            ? fullId.Substring(0, suffixIndex)
+            : fullId;
+        var suffix = suffixIndex > 0
+            ? fullId.Substring(suffixIndex + 1)
+            : "";
 
         if (RshItemAdapter.OnSpawnCallbacks.TryGetValue(baseId, out var callback))
         {
@@ -93,7 +100,7 @@ internal class RshSpawnCallback : MonoBehaviour
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError($"[RshCCL] onSpawn callback failed for item '{baseId}': {ex}");
+                Plugin.LogError("onspawn_callback_failed", "onSpawn callback failed for item '{0}': {1}", baseId, ex);
             }
         }
 

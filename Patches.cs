@@ -52,8 +52,7 @@ internal class RefreshRecipeListGuardPatch
     public static Exception Finalizer(Exception __exception)
     {
         if (__exception == null) return null;
-        Plugin.Logger.LogWarning($"[RshCCL] Suppressed exception in RefreshRecipeList: {__exception.GetType().Name}: {__exception.Message}");
+        Plugin.LogWarning("refreshrecipelist_suppressed_exception", "Suppressed exception in RefreshRecipeList: {0}: {1}", __exception.GetType().Name, __exception.Message);
         return null;
-
     }
 }

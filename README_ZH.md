@@ -39,9 +39,10 @@ _一个兼容转接层，将旧 RshLib 的 API 调用转发到
 3. 从 [Releases](https://github.com/CNCUMC/RshCCL/releases) 下载最新版 `RshCCL.dll`。
 4. 将 `RshCCL.dll` 放入 `BepInEx/plugins/`。
 5. **删除** 旧版 `RshLib.dll`（如果存在）。
+6. （可选）安装 [Bark](https://github.com/CNCUMC/Bark) — 提供增强的本地化支持（自动检测缺失翻译、多语言生成器）。
 
 > ⚠️ RshCCL 使用与旧 RshLib 相同的 BepInEx GUID (`com.rushellxyz.rshlib`)。
-> 
+>
 > `plugins` 目录下**只能有一个** `RshLib.dll`。
 
 ---

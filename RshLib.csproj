@@ -33,6 +33,10 @@
     <Reference Include="KrokoshaCasualtiesMP">
       <HintPath>$(KrokoshaCasualtiesMPDll)</HintPath>
     </Reference>
+    <!-- Bark -->
+    <Reference Include="Bark">
+      <HintPath>$(BarkDll)</HintPath>
+    </Reference>
   </ItemGroup>
   
   <ItemGroup>

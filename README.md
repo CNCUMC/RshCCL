@@ -42,6 +42,7 @@ unchanged, while internally routing all registrations through CUCoreLib.
 3. Download the latest `RshCCL.dll` from [Releases](https://github.com/CNCUMC/RshCCL/releases).
 4. Place `RshCCL.dll` in `BepInEx/plugins/`.
 5. **Remove** the old `RshLib.dll` if it exists.
+6. (Optional) Install [Bark](https://github.com/CNCUMC/Bark) — offers enhanced localization support (auto-detect missing translations, multi-language generators).
 
 > ⚠️ RshCCL uses the same BepInEx GUID as old RshLib (`com.rushellxyz.rshlib`).
 >

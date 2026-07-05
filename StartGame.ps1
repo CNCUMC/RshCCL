@@ -1,25 +1,8 @@
 ﻿param(
     [string]$GamePath = "F:/SteamLibrary/steamapps/common/Casualties Unknown Demo",
-    [string]$ModNamespace = "RshLib"
+    [string]$ModNamespace = "RshLib",
+    [string]$ModName = "RshCCL"
 )
-
-function Convert-ToDisplayName {
-    param([string]$Namespace)
-    if ([string]::IsNullOrWhiteSpace($Namespace)) { return $Namespace }
-
-    $result = [System.Text.StringBuilder]::new()
-    $chars = $Namespace.ToCharArray()
-    for ($i = 0; $i -lt $chars.Length; $i++) {
-        $c = $chars[$i]
-        if ($i -gt 0 -and [char]::IsUpper($c) -and [char]::IsLower($chars[$i-1])) {
-            $result.Append(' ') | Out-Null
-        }
-        $result.Append($c) | Out-Null
-    }
-    return $result.ToString()
-}
-
-$ModName = Convert-ToDisplayName -Namespace $ModNamespace
 
 $OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
@@ -98,8 +81,8 @@ try
 {
     $pluginPath = [System.IO.Path]::Combine($bepInExPath, "plugins", $targetModFolder)
     New-Item -ItemType Directory -Path $pluginPath -Force
-    Copy-Item $ModDll ([System.IO.Path]::Combine($pluginPath, "$ModNamespace.dll")) -Force
-    Write-ColoredMessage "正在复制模组 DLL 到 ""$pluginPath\$ModNamespace.dll""。" Cyan
+    Copy-Item $ModDll ([System.IO.Path]::Combine($pluginPath, "$ModName.dll")) -Force
+    Write-ColoredMessage "正在复制模组 DLL 到 ""$pluginPath\$ModName.dll""。" Cyan
 }
 catch
 {
