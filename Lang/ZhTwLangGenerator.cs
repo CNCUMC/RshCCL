@@ -15,6 +15,10 @@ public class ZhTwLangGenerator : ModLangGenBase
         Log("info_null", "物品 {0} 的 ItemInfo 為空");
         Log("onspawn_callback_failed", "物品 '{0}' 的 onSpawn 回呼失敗：{1}");
         Log("refreshrecipelist_suppressed_exception", "RefreshRecipeList 中抑制的例外狀況：{0}：{1}");
-        Log("loaded", "RshLib已加載！");
+        Log("savegame_duplicate_key_suppressed", "SaveGame 中抑制的重複鍵：{0}");
+        Log("hide", "已從插件登錄檔隱藏，防止誤判衝突。");
+        Log("bark_init_failed", "Bark 在地化初始化失敗：{0}");
+        Log("restore", "所有模組載入後已恢復至插件登錄檔。");
+        Log("loaded", "RshCCL 已載入！");
     }
 }

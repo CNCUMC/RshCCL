@@ -36,6 +36,7 @@ public class Plugin : BaseUnityPlugin
 
     internal new static ManualLogSource Logger;
     private readonly Harmony _harmony = new(Guid);
+    private static PluginInfo _savedPluginInfo;
 
     public void Awake()
     {
@@ -52,10 +53,43 @@ public class Plugin : BaseUnityPlugin
                 "GAME VERSION MISMATCH, Expected: 7.0.1, Current: {0}, Loading will continue", Application.version);
 
         _harmony.PatchAll();
-        
+
+        PreventFalseConflictDetection();
+
         InitializeLocalization();
 
         LogInfo("loaded", "RshCCL loaded!");
+    }
+
+    private static void PreventFalseConflictDetection()
+    {
+        try
+        {
+            if (!BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(Guid, out var info)) return;
+            _savedPluginInfo = info;
+            BepInEx.Bootstrap.Chainloader.PluginInfos.Remove(Guid);
+            LogInfo("hide", "Hidden from plugin registry to prevent false conflict detection.");
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    internal static void RestoreToPluginInfos()
+    {
+        if (_savedPluginInfo == null) return;
+        if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(Guid)) return;
+
+        try
+        {
+            BepInEx.Bootstrap.Chainloader.PluginInfos[Guid] = _savedPluginInfo;
+            LogInfo("restore", "Restored to plugin registry after all mods loaded.");
+        }
+        catch
+        {
+            // ignored
+        }
     }
 
     private static void InitializeLocalization()

@@ -15,6 +15,10 @@ public class EnLangGenerator : ModLangGenBase
         Log("info_null", "The info of item {0} is null");
         Log("onspawn_callback_failed", "onSpawn callback failed for item '{0}': {1}");
         Log("refreshrecipelist_suppressed_exception", "Suppressed exception in RefreshRecipeList: {0}: {1}");
+        Log("savegame_duplicate_key_suppressed", "Suppressed duplicate key in SaveGame: {0}");
+        Log("hide", "Hidden from plugin registry to prevent false conflict detection.");
+        Log("bark_init_failed", "Failed to initialize Bark localization: {0}");
+        Log("restore", "Restored to plugin registry after all mods loaded.");
         Log("loaded", "RshCCL loaded!");
     }
 }

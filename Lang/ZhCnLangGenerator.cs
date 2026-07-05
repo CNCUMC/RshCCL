@@ -15,6 +15,10 @@ public class ZhCnLangGenerator : ModLangGenBase
         Log("info_null", "物品 {0} 的 ItemInfo 为空");
         Log("onspawn_callback_failed", "物品 '{0}' 的 onSpawn 回调失败：{1}");
         Log("refreshrecipelist_suppressed_exception", "RefreshRecipeList 中抑制的异常：{0}：{1}");
+        Log("savegame_duplicate_key_suppressed", "SaveGame 中抑制的重复键：{0}");
+        Log("hide", "已从插件注册表隐藏，防止误判冲突。");
+        Log("bark_init_failed", "Bark 本地化初始化失败：{0}");
+        Log("restore", "所有模组加载后已恢复至插件注册表。");
         Log("loaded", "RshCCL 已加载！");
     }
 }
