@@ -3,9 +3,9 @@
 [English Guide](README.md)
 
 > **⚠️ RshCCL 仅作为兼容层存在。**
-> 
+>
 > 开发者应始终优先直接使用 [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib) 作为前置。
-> 
+>
 > 玩家应提醒模组作者将 API 迁移至 CUCoreLib。
 
 # RshCCL
@@ -13,21 +13,20 @@
 [GitHub](https://github.com/CNCUMC/RshCCL) | [NexusMods](https://www.nexusmods.com/scavprototype/mods/403) | [CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib)
 
 _一个兼容转接层，将旧 RshLib 的 API 调用转发到
-[CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib) （CCL）。
+[CUCoreLib](https://github.com/jimmyking9999999/CUCoreLib) （CCL）。_
+
 ---
 
 ## 概述
 
 **RshCCL** 是 RshLib 的无感替代 *（大部分情况下）*。它保留了 `Plugin.RegisterItem(string, RshItem)` API 签名，老模组无需修改即可运行，内部将所有注册转发至 CUCoreLib。
 
-| 功能                                    | 实现方式                                                           |
-|---------------------------------------|----------------------------------------------------------------|
-| `RegisterItem`                        | 将 `RshItem` 转换为 `CustomItemInfo`，调用 `ItemRegistry.Register`    |
-| `onSpawn` 回调                          | 通过 CCL `SpawnComponents` + `RshSpawnCallback` MonoBehaviour 注入 |
-| `krokMpEnabled` / `togetherMpEnabled` | 提供向后兼容字段                                                       |
-| 冲突避免                                  | 从 `Chainloader.PluginInfos` 移除自身，让 NewClothing 等模组走 CCL 原生路径   |
-| 控制台自动补全                               | Patch `spawn` 命令，包含所有 CCL 注册的物品                                |
-| 配方崩溃防护                                | Harmony finalizer 捕获 `RefreshRecipeList` 中的 NRE                |
+- **`RegisterItem`** — 将 `RshItem` 转换为 `CustomItemInfo`，调用 `ItemRegistry.Register`
+- **`onSpawn` 回调** — 通过 CCL `SpawnComponents` + `RshSpawnCallback` MonoBehaviour 注入
+- **`krokMpEnabled` / `togetherMpEnabled`** — 提供向后兼容字段
+- **冲突避免** — 从 `Chainloader.PluginInfos` 移除自身，让 NewClothing 等模组走 CCL 原生路径
+- **控制台自动补全** — Patch `spawn` 命令，包含所有 CCL 注册的物品
+- **配方崩溃防护** — Harmony finalizer 捕获 `RefreshRecipeList` 中的 NRE
 
 ---
 
@@ -39,7 +38,6 @@ _一个兼容转接层，将旧 RshLib 的 API 调用转发到
 3. 从 [Releases](https://github.com/CNCUMC/RshCCL/releases) 下载最新版 `RshCCL.dll`。
 4. 将 `RshCCL.dll` 放入 `BepInEx/plugins/`。
 5. **删除** 旧版 `RshLib.dll`（如果存在）。
-6. （可选）安装 [Bark](https://github.com/CNCUMC/Bark) — 提供增强的本地化支持（自动检测缺失翻译、多语言生成器）。
 
 > ⚠️ RshCCL 使用与旧 RshLib 相同的 BepInEx GUID (`com.rushellxyz.rshlib`)。
 >
@@ -53,20 +51,3 @@ RshLib 从未提供路径或资源加载 API。老模组中硬编码的路径（
 
 建议迁移到 CCL 的
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib)，它支持相对于 DLL 的动态路径。
-
----
-
-## 项目结构
-
-```
-RshCCL/
-├── Plugin.cs          # 入口：兼容 API + 冲突避免
-├── RshItem.cs         # 旧 RshItem 类型（向后兼容）
-├── RshItemAdapter.cs  # RshItem → CustomItemInfo 转换器 + onSpawn 回调
-├── Patches.cs         # ConsoleScript、GlobalDark、RefreshRecipeList 防护
-├── RshLib.csproj      # 项目文件（依赖 CUCoreLib）
-├── CHANGELOG.md       # 英文更新日志
-├── CHANGELOG_ZH.md    # 中文更新日志
-├── README.md
-└── README_ZH.md
-```

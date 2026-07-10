@@ -23,21 +23,21 @@
     <PackageReference Include="Lib.Harmony" Version="2.4.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" IncludeAssets="compile" />
   </ItemGroup>
-
+  
+  <!-- CUCoreLib (CCL) -->
   <ItemGroup>
-    <!-- CUCoreLib (CCL) -->
     <Reference Include="CUCoreLib">
       <HintPath>$(CUCoreLibDll)</HintPath>
     </Reference>
-    <!-- KrokoshaCasualtiesMP (MP) -->
-    <Reference Include="KrokoshaCasualtiesMP">
-      <HintPath>$(KrokoshaCasualtiesMPDll)</HintPath>
-    </Reference>
-    <!-- Bark -->
-    <Reference Include="Bark">
-      <HintPath>$(BarkDll)</HintPath>
-    </Reference>
   </ItemGroup>
+  
+  <!-- KrokoshaCasualtiesMP (MP) -->
+<!--  <ItemGroup>-->
+<!--    <Reference Include="KrokoshaCasualtiesMP">-->
+<!--      <HintPath>$(KrokoshaCasualtiesMPDll)</HintPath>-->
+<!--    </Reference>-->
+<!--  </ItemGroup>-->
+
   
   <ItemGroup>
     <Reference Include="Assembly-CSharp">

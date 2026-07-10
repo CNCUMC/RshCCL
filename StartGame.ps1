@@ -81,7 +81,7 @@ try
 {
     $pluginPath = [System.IO.Path]::Combine($bepInExPath, "plugins", $targetModFolder)
     New-Item -ItemType Directory -Path $pluginPath -Force
-    Copy-Item $ModDll ([System.IO.Path]::Combine($pluginPath, "$ModName.dll")) -Force
+    Copy-Item $ModDll ([System.IO.Path]::Combine($pluginPath, "RshCCL.dll")) -Force
     Write-ColoredMessage "正在复制模组 DLL 到 ""$pluginPath\$ModName.dll""。" Cyan
 }
 catch

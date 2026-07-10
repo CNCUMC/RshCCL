@@ -13,19 +13,16 @@ public static class RshItemAdapter
     public static void RegisterItem(string itemId, RshItem rshItem)
     {
         if (string.IsNullOrEmpty(itemId))
-            throw new ArgumentException(
-                Plugin.LocaleLog("id_null",
-                    "The id of item you're trying to register is null or empty! Item wasn't registred."));
+            throw new ArgumentException("The id of item you're trying to register is null or empty! Item wasn't registred.");
 
         if (ItemRegistry.TryGetCustomInfo(itemId, out _))
-            throw new ArgumentException("item_registred",
-                Plugin.LocaleLog("Item {0} already was registred before! Item wasn't registred.", itemId));
+            throw new ArgumentException($"Item {itemId} already was registred before! Item wasn't registred.");
 
         if (null == rshItem.sprite)
-            Plugin.LogWarning("sprite_null", "The sprite of item {0} is null", itemId);
+            Plugin.LogWarning("The sprite of item {0} is null", itemId);
 
         if (null == rshItem.info)
-            Plugin.LogWarning("info_null", "The info of item {0} is null", itemId);
+            Plugin.LogWarning("The info of item {0} is null", itemId);
 
         if (string.IsNullOrEmpty(rshItem.baseItem))
             rshItem.baseItem = "geofruit";

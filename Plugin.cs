@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using BepInEx;
 using BepInEx.Logging;
@@ -16,23 +14,22 @@ namespace RshLib;
 [BepInPlugin(Guid, Name, Version)]
 [BepInDependency("net.cucorelib", "1.0.2")]
 [BepInDependency("KrokoshaCasualtiesMP", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInDependency("org.cucnmc.bark", BepInDependency.DependencyFlags.SoftDependency)]
-
-[SuppressMessage("ReSharper", "NotAccessedField.Global")]
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class Plugin : BaseUnityPlugin
 {
     public const string Guid = "com.rushellxyz.rshlib";
     public const string Name = "RshCCL";
-    public const string Version = "3.1.1";
+    public const string Version = "3.2.1";
 
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     // ReSharper disable once CollectionNeverQueried.Global
     public static Dictionary<string, RshItem> itemRegistry = new();
+    public static Dictionary<string, Sprite> customItems = new();
     public static bool togetherMpEnabled;
+
+    [Obsolete("Use togetherMpEnabled instead.")]
     public static bool krokMpEnabled;
+
     public static bool anyItemIsRegistred => ItemRegistry.GetRegisteredItemIds().Any();
-    internal static bool barkLoaded;
 
     internal new static ManualLogSource Logger;
     private readonly Harmony _harmony = new(Guid);
@@ -44,21 +41,18 @@ public class Plugin : BaseUnityPlugin
 
         togetherMpEnabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("CasualtiesMP")
                             && 0 == PlayerPrefs.GetInt("CasualtiesMP_FORCE_DISABLE_MP_MOD");
-        krokMpEnabled = togetherMpEnabled;
 
-        LogInfo("version", "RshCCL {0}, CUCoreLib bridge active, Together: {1}", Version, togetherMpEnabled);
+        LogInfo("RshCCL {0}, CUCoreLib bridge active, Together: {1}", Version, togetherMpEnabled);
 
         if ("7.0.1" != Application.version)
-            LogWarning("game_version_mismatch",
-                "GAME VERSION MISMATCH, Expected: 7.0.1, Current: {0}, Loading will continue", Application.version);
+            LogWarning("GAME VERSION MISMATCH, Expected: 7.0.1, Current: {0}, Loading will continue",
+                Application.version);
 
         _harmony.PatchAll();
 
         PreventFalseConflictDetection();
 
-        InitializeLocalization();
-
-        LogInfo("loaded", "RshCCL loaded!");
+        LogInfo("RshCCL loaded!");
     }
 
     private static void PreventFalseConflictDetection()
@@ -68,7 +62,7 @@ public class Plugin : BaseUnityPlugin
             if (!BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(Guid, out var info)) return;
             _savedPluginInfo = info;
             BepInEx.Bootstrap.Chainloader.PluginInfos.Remove(Guid);
-            LogInfo("hide", "Hidden from plugin registry to prevent false conflict detection.");
+            LogInfo("Hidden from plugin registry to prevent false conflict detection.");
         }
         catch
         {
@@ -84,42 +78,11 @@ public class Plugin : BaseUnityPlugin
         try
         {
             BepInEx.Bootstrap.Chainloader.PluginInfos[Guid] = _savedPluginInfo;
-            LogInfo("restore", "Restored to plugin registry after all mods loaded.");
+            LogInfo("Restored to plugin registry after all mods loaded.");
         }
         catch
         {
             // ignored
-        }
-    }
-
-    private static void InitializeLocalization()
-    {
-        if (!BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("org.cucnmc.bark"))
-            return;
-
-        try
-        {
-            foreach (var genName in new[] { "EnLangGenerator", "ZhCnLangGenerator", "ZhTwLangGenerator" })
-            {
-                var genType = Type.GetType($"RshLib.Lang.{genName}, RshLib");
-                if (genType == null) continue;
-                var gen = Activator.CreateInstance(genType);
-                var init = genType.GetMethod("Initialize",
-                    BindingFlags.Public | BindingFlags.Instance);
-                init?.Invoke(gen, [Logger]);
-            }
-
-            var betterLocale = Type.GetType("Bark.BetterCCL.BetterLocale, Bark");
-            var flush = betterLocale?.GetMethod("Flush",
-                BindingFlags.Public | BindingFlags.Static);
-            flush?.Invoke(null, null);
-
-            barkLoaded = true;
-        }
-        catch (Exception ex)
-        {
-            LogWarning("bark_init_failed",
-                "Failed to initialize Bark localization: {0}", ex.Message);
         }
     }
 
@@ -163,53 +126,32 @@ public class Plugin : BaseUnityPlugin
         return Application.persistentDataPath;
     }
 
-    internal static void LogError(string key, string text, params object[] args)
+    internal static void LogError(string text, params object[] args)
     {
-        var message = barkLoaded
-            ? LocaleLog(key, args)
-            : Replace(text, args);
+        var message = Format(text, args);
         Logger.LogError(message);
         CUCoreUtils.ConsoleLog(ConsoleScript.instance, "[ERROR][RshCCL]" + message);
     }
 
-    internal static void LogInfo(string key, string text, params object[] args)
+    internal static void LogInfo(string text, params object[] args)
     {
-        var message = barkLoaded
-            ? LocaleLog(key, args)
-            : Replace(text, args);
+        var message = Format(text, args);
         Logger.LogInfo(message);
         CUCoreUtils.ConsoleLog(ConsoleScript.instance, "[RshCCL]" + message);
     }
 
-    internal static void LogWarning(string key, string text, params object[] args)
+    internal static void LogWarning(string text, params object[] args)
     {
-        var message = barkLoaded
-            ? LocaleLog(key, args)
-            : Replace(text, args);
+        var message = Format(text, args);
         Logger.LogWarning(message);
         CUCoreUtils.ConsoleLog(ConsoleScript.instance, "[WARNING][RshCCL]" + message);
     }
 
-    private static string Replace(string key, params object[] args)
+    private static string Format(string text, params object[] args)
     {
         return args == null || args.Length == 0
-            ? key
-            : Regex.Replace(key, @"\{(\d+)\}",
+            ? text
+            : Regex.Replace(text, @"\{(\d+)\}",
                 match => args[int.Parse(match.Groups[1].Value)].ToString());
-    }
-
-    internal static string LocaleLog(string key, params object[] args)
-    {
-        try
-        {
-            var betterLocale = Type.GetType("Bark.BetterCCL.BetterLocale, Bark");
-            var getLog = betterLocale?.GetMethod("GetLog",
-                BindingFlags.Public | BindingFlags.Static);
-            return (string)getLog?.Invoke(null, [key, args]);
-        }
-        catch
-        {
-            return Replace(key, args);
-        }
     }
 }

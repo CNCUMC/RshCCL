@@ -2,9 +2,10 @@
 <Project>
   <PropertyGroup>
     <BaseGamePath>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo</BaseGamePath>
-    <CUCoreLibDll>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo/BepInEx/plugins/CUCoreLib.dll</CUCoreLibDll>
-    <KrokoshaCasualtiesMPDll>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo/BepInEx/plugins/KrokMP/KrokoshaCasualtiesMP.dll</KrokoshaCasualtiesMPDll>
-    <BarkDll>F:/SteamLibrary/steamapps/common/Casualties Unknown Demo/BepInEx/plugins/Bark/Bark.dll</BarkDll>
+    <CUCoreLibDll>$(BaseGamePath)/BepInEx/plugins/CUCoreLib.dll</CUCoreLibDll>
+    <KrokoshaCasualtiesMPDll>$(BaseGamePath)/BepInEx/plugins/KrokMP/KrokoshaCasualtiesMP.dll</KrokoshaCasualtiesMPDll>
+    <BarkDll>$(BaseGamePath)/BepInEx/plugins/Bark/Bark.dll</BarkDll>
+    <RshLibDll>E:/Downloads/RshLib.dll</RshLibDll>
     <!-- <GameManagedDir>$(BaseGamePath)\CasualtiesUnknown_Data\Managed</GameManagedDir> -->
     <!-- <BepInExDir>$(BaseGamePath)\BepInEx</BepInExDir> -->
   </PropertyGroup>
