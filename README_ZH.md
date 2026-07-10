@@ -51,3 +51,7 @@ RshLib 从未提供路径或资源加载 API。老模组中硬编码的路径（
 
 建议迁移到 CCL 的
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib)，它支持相对于 DLL 的动态路径。
+
+## License
+
+[LGPL v3](LICENSE.md)

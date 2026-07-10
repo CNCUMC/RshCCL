@@ -19,5 +19,6 @@
 
 ### 变更
 
+- **LGPL**: 从GPL v3协议转为LGPL v3。
 - **简化日志**：`LogInfo`/`LogWarning`/`LogError` 现在使用简单的 `Regex.Replace` 格式化，而非 locale key。
 - **项目结构**：Patch 移至 `Patchers/` 子目录，结构更清晰。

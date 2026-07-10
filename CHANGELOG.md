@@ -19,5 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Changed
 
+- **LGPL**: Convert from GPL v3 to LGPL v3.
 - **Simplified logging**: `LogInfo`/`LogWarning`/`LogError` now use simple `Regex.Replace` formatting instead of locale keys.
 - **Project structure**: Patches moved to `Patchers/` subdirectory for better organization.

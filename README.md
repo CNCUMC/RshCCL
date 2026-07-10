@@ -56,3 +56,7 @@ own resource-loading code.
 Consider migrating to CCL's
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib) which resolves
 paths relative to the calling DLL.
+
+## License
+
+[LGPL v3](LICENSE.md)
