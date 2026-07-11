@@ -19,11 +19,3 @@
 - **krokMpEnabled** — 现在默认为 `false` 并标记 `[Obsolete]`，与原版 RshLib v3.2.0 行为一致。防止 NewFirearms 错误启用 MP
   功能导致崩溃。
 
-### 移除
-
-- **Bark 依赖** — RshLib 不再需要或引用 Bark。所有本地化通过 CCL 的 `LocaleRegistry` 直接处理。
-- **Lang/ 目录** — EnLangGenerator、ZhCnLangGenerator、ZhTwLangGenerator — 不再需要。
-- **InitializeLocalization()** — 方法已移除。
-- **LocaleLog()** — 方法已移除。
-- **barkLoaded** — 字段已移除。
-- **using System.Reflection** — 导入已移除（不再需要）。

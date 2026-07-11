@@ -20,13 +20,3 @@ to [Semantic Versioning](https://semver.org/).
 
 - **krokMpEnabled** — Now defaults to `false` and marked `[Obsolete]`, matching original RshLib v3.2.0 behavior. This
   prevents NewFirearms from incorrectly enabling MP features and crashing.
-
-### Removed
-
-- **Bark dependency** — RshLib no longer requires or references Bark. All localization is handled directly through CCL's
-  `LocaleRegistry`.
-- **Lang/ directory** — EnLangGenerator, ZhCnLangGenerator, ZhTwLangGenerator — no longer needed.
-- **InitializeLocalization()** — Method removed.
-- **LocaleLog()** — Method removed.
-- **barkLoaded** — Field removed.
-- **using System.Reflection** — Import removed (no longer needed for Bark reflection).
