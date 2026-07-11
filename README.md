@@ -62,6 +62,9 @@ Consider migrating to CCL's
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib) which resolves
 paths relative to the calling DLL.
 
+> ⚠️ Some compatibility issues are not caused by RshCCL and also occur with original RshLib.
+> For those, install [CUModFixer](https://www.nexusmods.com/scavprototype/mods/424) as well.
+
 ---
 
 ## License

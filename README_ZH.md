@@ -56,6 +56,9 @@ RshLib 从未提供路径或资源加载 API。老模组中硬编码的路径（
 建议迁移到 CCL 的
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib)，它支持相对于 DLL 的动态路径。
 
+> ⚠️ 有些兼容性问题不是 RshCCL 导致的，在原 RshLib 中同样存在。
+> 此类问题请额外安装 [CUModFixer](https://www.nexusmods.com/scavprototype/mods/424)。
+
 ---
 
 ## License
