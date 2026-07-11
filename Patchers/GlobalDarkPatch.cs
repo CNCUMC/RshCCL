@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using TMPro;
 using UnityEngine;
 
 namespace RshLib.Patchers;
@@ -13,7 +14,7 @@ internal class GlobalDarkPatch
         var betaBuildObj = GameObject.Find("GlobalDark(Clone)/betabuild");
         if (betaBuildObj == null) return;
 
-        var betaBuildText = betaBuildObj.GetComponent<TMPro.TMP_Text>();
+        var betaBuildText = betaBuildObj.GetComponent<TMP_Text>();
         if (betaBuildText == null) return;
 
         if (!betaBuildText.text.Contains(" modded"))

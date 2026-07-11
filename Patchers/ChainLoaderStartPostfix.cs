@@ -1,8 +1,9 @@
-﻿using HarmonyLib;
+﻿using BepInEx.Bootstrap;
+using HarmonyLib;
 
 namespace RshLib.Patchers;
 
-[HarmonyPatch(typeof(BepInEx.Bootstrap.Chainloader))]
+[HarmonyPatch(typeof(Chainloader))]
 internal class ChainLoaderStartPostfix
 {
     [HarmonyPatch("Start")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BepInEx;
+using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using CUCoreLib.Helpers;
 using CUCoreLib.Registries;
@@ -18,7 +19,7 @@ public class Plugin : BaseUnityPlugin
 {
     public const string Guid = "com.rushellxyz.rshlib";
     public const string Name = "RshCCL";
-    public const string Version = "3.2.1";
+    public const string Version = "3.2.2";
 
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     // ReSharper disable once CollectionNeverQueried.Global
@@ -29,17 +30,17 @@ public class Plugin : BaseUnityPlugin
     [Obsolete("Use togetherMpEnabled instead.")]
     public static bool krokMpEnabled;
 
-    public static bool anyItemIsRegistred => ItemRegistry.GetRegisteredItemIds().Any();
-
     internal new static ManualLogSource Logger;
-    private readonly Harmony _harmony = new(Guid);
     private static PluginInfo _savedPluginInfo;
+    private readonly Harmony _harmony = new(Guid);
+
+    public static bool anyItemIsRegistred => ItemRegistry.GetRegisteredItemIds().Any();
 
     public void Awake()
     {
         Logger = base.Logger;
 
-        togetherMpEnabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("CasualtiesMP")
+        togetherMpEnabled = Chainloader.PluginInfos.ContainsKey("CasualtiesMP")
                             && 0 == PlayerPrefs.GetInt("CasualtiesMP_FORCE_DISABLE_MP_MOD");
 
         LogInfo("RshCCL {0}, CUCoreLib bridge active, Together: {1}", Version, togetherMpEnabled);
@@ -59,9 +60,9 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            if (!BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(Guid, out var info)) return;
+            if (!Chainloader.PluginInfos.TryGetValue(Guid, out var info)) return;
             _savedPluginInfo = info;
-            BepInEx.Bootstrap.Chainloader.PluginInfos.Remove(Guid);
+            Chainloader.PluginInfos.Remove(Guid);
             LogInfo("Hidden from plugin registry to prevent false conflict detection.");
         }
         catch
@@ -73,11 +74,11 @@ public class Plugin : BaseUnityPlugin
     internal static void RestoreToPluginInfos()
     {
         if (_savedPluginInfo == null) return;
-        if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(Guid)) return;
+        if (Chainloader.PluginInfos.ContainsKey(Guid)) return;
 
         try
         {
-            BepInEx.Bootstrap.Chainloader.PluginInfos[Guid] = _savedPluginInfo;
+            Chainloader.PluginInfos[Guid] = _savedPluginInfo;
             LogInfo("Restored to plugin registry after all mods loaded.");
         }
         catch
@@ -96,7 +97,7 @@ public class Plugin : BaseUnityPlugin
     {
         var target = AccessTools.Method(AccessTools.TypeByName(targetClass), targetMethod);
         var prefix = AccessTools.Method(Type.GetType(prefixClass), "Prefix");
-        harmony.Patch(target, prefix: new HarmonyMethod(prefix));
+        harmony.Patch(target, new HarmonyMethod(prefix));
     }
 
     internal static void PatchPostfix(Harmony harmony, string targetClass, string targetMethod, string postfixClass)

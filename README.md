@@ -26,9 +26,14 @@ unchanged, while internally routing all registrations through CUCoreLib.
 - **`RegisterItem`** — Converts `RshItem` → `CustomItemInfo`, then calls `ItemRegistry.Register`
 - **`onSpawn` callback** — Injected via CCL `SpawnComponents` + `RshSpawnCallback` MonoBehaviour
 - **`krokMpEnabled` / `togetherMpEnabled`** — Provided as backwards-compatible fields
-- **Conflict avoidance** — Removes self from `Chainloader.PluginInfos` so mods like NewClothing use their native CCL path
+- **Conflict avoidance** — Removes self from `Chainloader.PluginInfos` so mods like NewClothing use their native CCL
+  path
 - **Console autofill** — Patches `spawn` command to include every CCL-registered item
+- **Recipe ingredient display** — Shows custom crafting qualities (cutting, hammering, etc.) in recipe ingredient lists
 - **Recipe-list crash guard** — Harmony finalizer catches NRE in `RefreshRecipeList`
+- **SaveGame crash guard** — Harmony finalizer catches duplicate key exceptions in CCL SaveCoordinator
+- **Body.UseItem guard** — Prefix routes wearable items to `WearWearable` path; finalizer swallows NRE for non-wearable
+  items
 
 ---
 
@@ -56,6 +61,8 @@ own resource-loading code.
 Consider migrating to CCL's
 [`AssetLoader`](https://github.com/jimmyking9999999/CUCoreLib) which resolves
 paths relative to the calling DLL.
+
+---
 
 ## License
 

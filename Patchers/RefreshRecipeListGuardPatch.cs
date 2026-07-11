@@ -11,8 +11,8 @@ internal class RefreshRecipeListGuardPatch
     public static Exception Finalizer(Exception __exception)
     {
         if (__exception == null) return null;
-        Plugin.LogWarning("refreshrecipelist_suppressed_exception",
-            "Suppressed exception in RefreshRecipeList: {0}: {1}", __exception.GetType().Name, __exception.Message);
+        Plugin.LogWarning("Suppressed exception in RefreshRecipeList: {0}: {1}", __exception.GetType().Name,
+            __exception.Message);
         return null;
     }
 }

@@ -2,23 +2,31 @@
 
 All notable changes to this project are documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres
+to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## v3.1.2
+## v3.2.2
 
-### Removed
+### Added
 
-- **Bark dependency**: RshCCL no longer requires or references Bark. All localization is handled directly through CCL's `LocaleRegistry`.
-- **Lang/ directory**: EnLangGenerator, ZhCnLangGenerator, ZhTwLangGenerator — no longer needed.
-- **InitializeLocalization()**: Method removed.
-- **LocaleLog()**: Method removed.
-- **barkLoaded**: Field removed.
-- **using System.Reflection**: Import removed (no longer needed for Bark reflection).
+- **Body.UseItem guard** — Prefix routes wearable items to `WearWearable` path; finalizer swallows NRE for non-wearable
+  items (fixes NewClothing crash when equipping items)
+- **IngredientNamePatch** — Preserved from original RshLib — displays custom crafting qualities (cutting, hammering,
+  etc.) in recipe ingredient lists
 
 ### Changed
 
-- **LGPL**: Convert from GPL v3 to LGPL v3.
-- **Simplified logging**: `LogInfo`/`LogWarning`/`LogError` now use simple `Regex.Replace` formatting instead of locale keys.
-- **Project structure**: Patches moved to `Patchers/` subdirectory for better organization.
+- **krokMpEnabled** — Now defaults to `false` and marked `[Obsolete]`, matching original RshLib v3.2.0 behavior. This
+  prevents NewFirearms from incorrectly enabling MP features and crashing.
+
+### Removed
+
+- **Bark dependency** — RshLib no longer requires or references Bark. All localization is handled directly through CCL's
+  `LocaleRegistry`.
+- **Lang/ directory** — EnLangGenerator, ZhCnLangGenerator, ZhTwLangGenerator — no longer needed.
+- **InitializeLocalization()** — Method removed.
+- **LocaleLog()** — Method removed.
+- **barkLoaded** — Field removed.
+- **using System.Reflection** — Import removed (no longer needed for Bark reflection).

@@ -13,9 +13,7 @@ internal class ConsoleScriptPatch
         if (command == null) return;
 
         foreach (var itemId in ItemRegistry.GetRegisteredItemIds())
-        {
             if (!command.argAutofill[0].Contains(itemId))
                 command.argAutofill[0].Add(itemId);
-        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using CUCoreLib.Data;
 using CUCoreLib.Registries;
 using UnityEngine;
@@ -13,7 +14,8 @@ public static class RshItemAdapter
     public static void RegisterItem(string itemId, RshItem rshItem)
     {
         if (string.IsNullOrEmpty(itemId))
-            throw new ArgumentException("The id of item you're trying to register is null or empty! Item wasn't registred.");
+            throw new ArgumentException(
+                "The id of item you're trying to register is null or empty! Item wasn't registred.");
 
         if (ItemRegistry.TryGetCustomInfo(itemId, out _))
             throw new ArgumentException($"Item {itemId} already was registred before! Item wasn't registred.");
@@ -30,13 +32,10 @@ public static class RshItemAdapter
         // 转换为 CCL 的 CustomItemInfo
         var customInfo = ConvertToCustomItemInfo(rshItem);
 
-        // 处理 onSpawn 回调：注册到 SpawnComponents
-        if (rshItem.onSpawn != null)
-        {
-            OnSpawnCallbacks[itemId] = rshItem.onSpawn;
-            customInfo.SpawnComponents ??= [];
-            customInfo.SpawnComponents.Add(typeof(RshSpawnCallback).AssemblyQualifiedName);
-        }
+        // 处理 onSpawn 回调：注册到 RshItemAdapter.OnSpawnCallbacks，
+        // 由 UtilsCreatePostfix 在 Utils.Create 返回前同步调用。
+        // 不再使用 CCL 的 SpawnComponents（异步），避免双初始化和组件竞态。
+        if (rshItem.onSpawn != null) OnSpawnCallbacks[itemId] = rshItem.onSpawn;
 
         // 通过 CCL 注册
         ItemRegistry.Register(itemId, customInfo, rshItem.sprite);
@@ -51,10 +50,10 @@ public static class RshItemAdapter
         var source = rshItem.info;
 
         if (source == null) return custom;
+
         // 复制 ItemInfo 继承链上的所有公共实例字段
         foreach (var field in typeof(ItemInfo).GetFields(
-                     System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-        {
+                     BindingFlags.Public | BindingFlags.Instance))
             try
             {
                 var value = field.GetValue(source);
@@ -64,7 +63,13 @@ public static class RshItemAdapter
             {
                 // ignored
             }
-        }
+
+        // 如果源是 LiquidItemInfo，复制其特有字段（capacity, autoFill, defaultContents 等）
+        if (source is not LiquidItemInfo liquidSource) return custom;
+        custom.capacity = liquidSource.capacity;
+        custom.autoFill = liquidSource.autoFill;
+        if (liquidSource.defaultContents != null)
+            custom.defaultContents = new List<LiquidStack>(liquidSource.defaultContents);
 
         return custom;
     }
@@ -72,7 +77,7 @@ public static class RshItemAdapter
 
 internal class RshSpawnCallback : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         if (!TryGetComponent<Item>(out var item))
         {
@@ -90,16 +95,14 @@ internal class RshSpawnCallback : MonoBehaviour
             : "";
 
         if (RshItemAdapter.OnSpawnCallbacks.TryGetValue(baseId, out var callback))
-        {
             try
             {
                 callback(gameObject, suffix);
             }
             catch (Exception ex)
             {
-                Plugin.LogError("onspawn_callback_failed", "onSpawn callback failed for item '{0}': {1}", baseId, ex);
+                Plugin.LogError("onSpawn callback failed for item '{0}': {1}", baseId, ex);
             }
-        }
 
         Destroy(this);
     }
